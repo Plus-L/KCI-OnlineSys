@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.plusl.kci_onlinesys.mapper.UserMapper">
+    
+    <resultMap id="UserResultMap" type="com.plusl.kci_onlinesys.entity.User">
+        <id column="id" property="id"/>
+        <result column="email" property="email"/>
+        <result column="password" property="password"/>
+        <result column="nick_name" property="nickname"/>
+        <result column="real_name" property="realname"/>
+        <result column="user_type" property="usertype"/>
+        <result column="phone" property="phone"/>
+        <result column="sex" property="sex"/>
+        <result column="status" property="status"/>
+        <result column="grade" property="grade"/>
+        <result column="create_time" property="createtime"/>
+        <result column="update_time" property="updatetime"/>
+        <result column="major" property="major"/>
+    </resultMap>
+
+    <sql id="All_Column_List">
+        id,email,password,nick_name,real_name,user_type,phone,sex,status,grade,create_time,update_time,major
+    </sql>
+
+    <select id="findAllUser" parameterType="User">
+        select
+        <include refid="All_Column_List" />
+        from o_user;
+    </select>
+
+
+    <insert id="AddUser" parameterType="com.plusl.kci_onlinesys.entity.User">
+        insert into user(id, email, password, nickname, realname, usertype, phone, sex, status, grade, createtime, updatetime, major)
+                value (#{id},#{email},#{password},#{nickname},#{realname},#{usertype},#{phone},#{sex},#{status},#{grade},#{createtime},#{updatetime},#{major});
+    </insert>
+
+
+
+</mapper>
