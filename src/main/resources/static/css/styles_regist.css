@@ -1,0 +1,101 @@
+body {
+    background: url(https://s2.loli.net/2022/03/11/oPOhdugaNYlSnA1.jpg);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-attachment: fixed;
+}
+
+#register-box {
+    width: 30%;
+    height: auto;
+    margin: 0 auto;
+    margin-top: 13%;
+    text-align: center;
+    background: #00000060;
+    padding: 20px 50px;
+}
+
+#register-box h1 {
+    color: #fff;
+}
+
+#register-box .form .item {
+    margin-top: 15px;
+}
+
+#register-box .form .item i {
+    font-size: 18px;
+    color: #fff;
+}
+
+#register-box .form .item input {
+    width: 180px;
+    font-size: 18px;
+    border: 0;
+    border-bottom: 2px solid #fff;
+    padding: 5px 10px;
+    background: #ffffff00;
+    color: #fff;
+}
+
+#register-box button.bu1 {
+    margin-top: 20px;
+    width: 190px;
+    height: 30px;
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+    background-image: linear-gradient(to right, #74ebd5 0%, #9face6 100%);
+    border: 0;
+    border-radius: 15px;
+}
+
+#ziti {
+    color: #fff;
+}
+
+.z_item1 {
+    display: inline-block;
+}
+
+.z_item2 {
+    display: inline-block;
+}
+
+.z_item3 {
+    display: inline-block;
+}
+
+.item {
+    display: inline-block;
+    font-size: 0;
+}
+
+a:-webkit-any-link {
+    color: antiquewhite;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.t_item {
+    font-size: 0;
+}
+
+input::placeholder {
+    color: #fff;
+    opacity: 1;
+}
+
+#register-box button.bu2 {
+    margin-left: 10px;
+    width: 90px;
+    height: 20px;
+    font-size: 10px;
+    border: 0;
+    margin-top: 20px;
+}
+
+#code {
+    margin-top: 20px;
+    width: 90px;
+}
