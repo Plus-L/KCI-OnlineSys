@@ -6,36 +6,128 @@
 <mapper namespace="com.plusl.kci_onlinesys.mapper.UserMapper">
     
     <resultMap id="UserResultMap" type="com.plusl.kci_onlinesys.entity.User">
-        <id column="id" property="id"/>
+<!--   column指数据库字段名，property指实体字段名       -->
+        <result column="id" property="id"/>
         <result column="email" property="email"/>
         <result column="password" property="password"/>
-        <result column="nick_name" property="nickname"/>
-        <result column="real_name" property="realname"/>
-        <result column="user_type" property="usertype"/>
+        <result column="salt" property="salt"/>
+        <result column="headurl" property="headurl"/>
+        <result column="nickname" property="nickname"/>
+        <result column="realname" property="realname"/>
+        <result column="usertype" property="usertype"/>
         <result column="phone" property="phone"/>
         <result column="sex" property="sex"/>
         <result column="status" property="status"/>
         <result column="grade" property="grade"/>
-        <result column="create_time" property="createtime"/>
-        <result column="update_time" property="updatetime"/>
+        <result column="createtime" property="createtime"/>
+        <result column="updatetime" property="updatetime"/>
         <result column="major" property="major"/>
+        <result column="activation_code" property="activationCode"/>
     </resultMap>
 
     <sql id="All_Column_List">
-        id,email,password,nick_name,real_name,user_type,phone,sex,status,grade,create_time,update_time,major
+        id,email,password,salt,headurl,nickname,realname,usertype,phone,sex,status,grade,createtime,updatetime,major,activation_code
     </sql>
 
-    <select id="findAllUser" parameterType="User">
+    <sql id="No_Id_List">
+        email,password,salt,headurl,nickname,realname,usertype,phone,sex,status,grade,createtime,updatetime,major,activation_code
+    </sql>
+
+    <select id="findAllUser" parameterType="User" resultMap="UserResultMap">
         select
         <include refid="All_Column_List" />
         from o_user;
     </select>
 
+    <select id="findById" parameterType="int" resultMap="UserResultMap">
+        select
+        <include refid="All_Column_List"/>
+        from o_user
+        where id = #{id}
+    </select>
 
-    <insert id="AddUser" parameterType="com.plusl.kci_onlinesys.entity.User">
-        insert into user(id, email, password, nickname, realname, usertype, phone, sex, status, grade, createtime, updatetime, major)
-                value (#{id},#{email},#{password},#{nickname},#{realname},#{usertype},#{phone},#{sex},#{status},#{grade},#{createtime},#{updatetime},#{major});
+    <select id="findByEmail" parameterType="String" resultMap="UserResultMap">
+        select
+        <include refid="All_Column_List"/>
+        from o_user
+        where email = #{email}
+    </select>
+
+    <select id="findByNickname" parameterType="String" resultMap="UserResultMap">
+        select
+        <include refid="All_Column_List"/>
+        from o_user
+        where nickname = #{nickname}
+    </select>
+
+    <select id="findByRealname" parameterType="String" resultMap="UserResultMap">
+        select
+        <include refid="All_Column_List"/>
+        from o_user
+        where realname = #{realname}
+    </select>
+
+    <insert id="addUser" parameterType="User" useGeneratedKeys="true" keyProperty="id">
+        insert into o_user (<include refid="No_Id_List"/>)
+        values
+            (#{email},#{password},#{salt},#{headurl},#{nickname},#{realname},#{usertype},#{phone},#{sex},#{status},#{grade},#{createtime},#{updatetime},#{major},#{activationCode});
     </insert>
+
+    <update id="updateUser" parameterType="User">
+        update
+            o_user
+        set
+        <if test="password!=null">
+            password = #{password},
+        </if>
+        <if test="headurl!=null">
+            head_url = #{headurl},
+        </if>
+        <if test="nickname!=null">
+            nickname = #{nickname},
+        </if>
+        <if test="realname!=null">
+            realname = #{realname},
+        </if>
+        <if test="phone!=null">
+            phone = #{phone},
+        </if>
+        <if test="grade!=null">
+            grade = #{grade},
+        </if>
+        <if test="major!=null">
+            major = #{major},
+        </if>
+        <if test="updatetime!=null">
+            updatetime = #{updatetime},
+        </if>
+        <if test="sex!=null">
+            sex = #{sex}
+        </if>
+        where
+            id = #{id}
+    </update>
+
+    <update id="updateStatus" parameterType="int">
+        update
+            o_user
+        set status = #{status}
+        where id = #{id}
+    </update>
+
+    <update id="updateHeadUrl">
+        update
+            o_user
+        set headurl = #{headurl}
+        where id = #{id}
+    </update>
+
+    <delete id="deleteUserById" parameterType="int">
+        delete from
+            o_user
+        where
+            id = #{id}
+    </delete>
 
 
 

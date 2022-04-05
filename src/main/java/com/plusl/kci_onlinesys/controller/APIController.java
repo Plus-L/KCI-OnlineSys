@@ -6,16 +6,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @program: kci_onlinesys
- * @description: 用户管理器
+ * @description: 接口控制器
  * @author: PlusL
  * @create: 2022-03-10 15:57
  **/
 @RestController
-public class UserController {
+public class APIController {
 
     @Autowired
     private UserService userService;
@@ -69,7 +70,6 @@ public class UserController {
         return mav;
     }*/
 
-/*
     //  /text?current=1&limit=20
     @RequestMapping(value = "/text" , method = RequestMethod.GET)
     @ResponseBody
@@ -79,8 +79,9 @@ public class UserController {
             @RequestParam(name = "limit", required = false, defaultValue = "30") int limit){
         System.out.println(current);
         System.out.println(limit);
+        List<String> list = new ArrayList<>();
         return "这是一个测试用例，测试@RequestParam的作用";
-    }*/
+    }
 
 
 }

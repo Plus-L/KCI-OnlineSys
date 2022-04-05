@@ -5,3 +5,20 @@
 */
 // This file is intentionally blank
 // Use this file to add JavaScript to your project
+$(function(){
+    $("#publishBtn").click(publish);
+});
+
+function publish() {
+    var title = $("title").val();
+    var content = $("description").val();
+    //发送异步请求
+    $.post(
+        "/community/add",
+        {"title":title,"content":content},
+        function (data) {
+            data = $.parseJSON(data);
+            $("#hintBody").text(data.msg);
+        }
+    )
+}

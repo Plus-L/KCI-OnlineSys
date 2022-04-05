@@ -1,10 +1,155 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="KCI-Publish" />
+    <meta name="author" content="PlusL" />
+    <title>KCI-发布资源或博客╰(*°▽°*)╯</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <!-- Fontawesome -->
+    <script src="https://kit.fontawesome.com/3facaa26c9.js" crossorigin="anonymous"></script>
+    <!-- Bootstrap icons-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+
+    <link th:href="@{/css/community.css}" rel="stylesheet" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link th:href="@{/css/styles.css}" rel="stylesheet" />
 </head>
-<body>
-$END$
+<body class="d-flex flex-column">
+<!-- 顶部导航栏 -->
+<header th:replace="index::UrlHeader">
+    <!-- Navigation-->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container px-5">
+            <a class="navbar-brand" href="index.html">KCI资源共享站</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="joinus.html">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link" href="pricing.html">Pricing</a></li>
+                    <li class="nav-item"><a class="nav-link" href="faq.html">FAQ</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="navbarDropdownBlog" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Blog</a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownBlog">
+                            <li><a class="dropdown-item" href="blog_home.html">Blog Home</a></li>
+                            <li><a class="dropdown-item" href="blog_post.html">Blog Post</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="navbarDropdownPortfolio" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Portfolio</a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownPortfolio">
+                            <li><a class="dropdown-item" href="portfolio-overview.html">Portfolio Overview</a></li>
+                            <li><a class="dropdown-item" href="portfolio-item.html">Portfolio Item</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<main class="container-fluid main">
+        <div class="row">
+            <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+                <h2><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 发起</h2>
+                <hr>
+
+                <form th:action="@{/community/publish}" method="post">
+
+                    <div class="form-group">
+                        <label for="title">帖子/资源标题（简单扼要）:</label>
+                        <input type="text" class="form-control" th:value="${title}" id="title" name="title"
+                               placeholder="问题标题……"
+                               autocomplete="off">
+                    </div>
+                    <div class="form-group" id="question-editor" style="z-index: 2">
+                        <label for="content">正文/资源简介 (必填，请参照右侧提示):</label>
+                        <textarea name="content" id="content"
+                                  class="form-control"
+                                  cols="30"
+                                  rows="10"></textarea>
+                    </div>
+<!--                    <script type="text/javascript">
+                        $(function () {
+                            var editor = editormd("question-editor", {
+                                width: "100%",
+                                height: 350,
+                                path: "/js/lib/",
+                                delay: 0,
+                                watch: false,
+                                placeholder: "请输入问题描述",
+                                imageUpload: true,
+                                imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+                                imageUploadURL: "/file/upload",
+                            });
+                        });
+                    </script>-->
+                    <div class="form-group">
+                        <label for="tag">添加标签:</label>
+                        <input type="text" class="form-control" id="tag" name="tag"
+                               autocomplete="off"
+                               placeholder="输入标签，以，号分隔">
+                        <div id="select-tag" class="publish-tag-tab">
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li role="presentation"
+                                    class="selectCategoryStat.first">
+                                    <a href="#" aria-controls="home" role="tab"
+                                       data-toggle="tab"></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="container-fluid main ">
+                        <div class="row">
+                            <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+                                <div class="alert alert-danger col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+                                <button type="submit" class="btn btn-success btn-publish" id="noScript">
+                                    发布
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+                <h3>帖子/资源发起指南</h3>
+                • 帖子/资源标题: 请用精简的语言描述您发布的帖子/资源，不超过25字 <br>
+                • 帖子/资源补充: 详细补充您的帖子/资源内容，并确保帖子/资源描述清晰直观<br>
+                • 选择标签: 选择一个或者多个合适的标签，用逗号隔开，每个标签不超过10个字<br>
+                • 目前仍在开发阶段，后续会逐渐补充文件导入、markdown语法适配、资源高速加载等<br>
+                • 如果有感觉到不便之处可以提交修改意见给作者，作者收到后会尽快赶工（写Bug）<br>
+            </div>
+        </div>
+</main>
+
+<!-- Footer-->
+<footer class="bg-dark py-4 mt-auto" th:replace="index::footer">
+    <div class="container px-5">
+        <div class="row align-items-center justify-content-between flex-column flex-sm-row">
+            <div class="col-auto"><div class="small m-0 text-white">Copyright &copy; KingCola-ICG</div></div>
+            <div class="col-auto">
+                <a class="link-light small" href="#!">Privacy</a>
+                <span class="text-white mx-1">&middot;</span>
+                <a class="link-light small" href="#!">Terms</a>
+                <span class="text-white mx-1">&middot;</span>
+                <a class="link-light small" href="#!">Contact</a>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script th:src="@{/js/scripts.js}"></script>
+
 </body>
 </html>
