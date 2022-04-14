@@ -49,6 +49,11 @@ public class IndexController {
         return "faq";
     }
 
+    @GetMapping("/error")
+    public String getErrorPage(){
+        return "/error/500";
+    }
+
 
 
 }

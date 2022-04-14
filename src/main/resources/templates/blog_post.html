@@ -60,6 +60,13 @@
                                     <div class="text-muted" th:utext="${user.createtime}">News, Business</div>
                                 </div>
                             </div>
+
+                            <div class="mt-2 ml-3 align-content-center">
+                                <a href="javascript:;" th:onclick="|like(this, 1, ${post.id});|" class="text-primary">
+                                    <b>赞</b> <i>11</i>
+                                </a>
+
+                            </div>
                         </div>
                         <div class="col-lg-9">
                             <!-- Post content-->
@@ -87,9 +94,14 @@
                             <section>
                                 <div class="card bg-light">
                                     <div class="card-body">
-                                        <!-- Comment form-->
-                                        <form class="mb-4"><textarea class="form-control" rows="3" placeholder="Join the discussion and leave a comment!"></textarea></form>
-                                        <!-- Comment with nested comments-->
+                                        <!-- 评论表单 -->
+                                        <form class="mb-4" method="post" th:action="@{|/comment/add/${post.id}|}">
+                                            <textarea class="form-control" rows="3" placeholder="发一条友善的评论!" name="content"></textarea>
+                                            <input type="hidden" name="entityType" value="1">
+                                            <input type="hidden" name="entityId" th:value="${post.id}">
+                                            <button class="btn btn-primary btn-sm" type="submit"> 发 布 </button>
+                                        </form>
+                                        <!-- 现有评论 -->
                                         <div class="d-flex mb-4" th:each="cvo:${comments}">
                                             <!-- Parent comment-->
                                             <div class="flex-shrink-0"><img class="rounded-circle" th:src="${cvo.user.headurl}" alt="..." style="width: 50px"/></div>
@@ -114,16 +126,28 @@
 
                                             </div>
                                         </div>
-                                        <!-- Single comment-->
-                                        <div class="d-flex">
-                                            <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
-                                            <div class="ms-3">
-                                                <div class="fw-bold">Commenter Name</div>
-                                                When I look at the universe and all the ways the universe wants to kill us, I find it hard to reconcile that with statements of beneficence.
-                                            </div>
-                                        </div>
+                            <!--  分页   -->
                                         <nav aria-label="Pagination" class="mt-5" th:replace="blog_home::pagination">
+                                            <hr class="my-0" />
+                                            <ul class="pagination justify-content-center my-4">
+                                                <li class="page-item">
+                                                    <a class="page-link" th:href="@{${page.path}(current=1)}" tabindex="-1" aria-disabled="true">首页</a>
+                                                </li>
 
+                                                <li th:class="|page-item ${page.current==1?'disabled':''}|">
+                                                    <a class="page-link" th:href="@{${page.path}(current=${page.current-1})}">上一页</a>
+                                                </li>
+
+                                                <li th:class="|page-item ${i==page.current?'active':''}|" aria-current="page" th:each="i:${#numbers.sequence(page.from,page.to)}">
+                                                    <a class="page-link" th:href="@{${page.path}(current=${i})}" th:text="${i}">1</a>
+                                                </li>
+
+                                                <li class="page-item disabled"><a class="page-link" href="#">...</a></li>
+
+                                                <li th:class="|page-item ${page.current==page.total?'disabled':''}|">
+                                                    <a class="page-link" th:href="@{${page.path}(current=${page.current+1})}">下一页</a>
+                                                </li>
+                                            </ul>
                                         </nav>
 
                                     </div>
@@ -151,7 +175,11 @@
         </footer>
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- jQurey -->
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
         <!-- Core theme JS-->
         <script th:src="@{/js/scripts.js}"></script>
+        <!-- 点赞业务实现JS  -->
+        <script th:src="@{/js/like.js}"></script>
     </body>
 </html>

@@ -5,6 +5,9 @@
 */
 // This file is intentionally blank
 // Use this file to add JavaScript to your project
+
+var CONTEXT_PATH = "http://plusl.natapp1.cc";
+
 $(function(){
     $("#publishBtn").click(publish);
 });

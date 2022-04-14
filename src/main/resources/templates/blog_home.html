@@ -84,7 +84,8 @@
                             <img class="card-img-top" th:if="${map.post.img!=null}" th:src="${map.post.img}" alt="..." />
                             <img class="card-img-top" th:if="${map.post.img==null}" src="https://dummyimage.com/600x350/ced4da/6c757d" alt="..." />
                                 <div class="card-body p-4">
-                                    <div class="badge bg-primary bg-gradient rounded-pill mb-2">News</div>
+                                    <div class="badge bg-primary bg-gradient rounded-pill mb-2" th:if="${map.post.type==1}">置顶</div>
+                                    <div class="badge bg-danger bg-gradient rounded-pill mb-2" th:if="${map.post.status==1}">精华</div>
                                     <a class="text-decoration-none link-dark stretched-link" th:href="@{|/community/detail/${map.post.id}|}">
                                         <div class="h5 card-title mb-3" th:utext="${map.post.title}">Blog post title</div>
                                     </a>
@@ -93,11 +94,12 @@
                                 <div class="card-footer p-4 pt-0 bg-transparent border-top-0">
                                     <div class="d-flex align-items-end justify-content-between">
                                         <div class="d-flex align-items-center">
-                                            <img class="rounded-circle me-3" th:src="${map.user.headurl}" alt="..." style="height: 40px"/>
+                                            <img class="rounded-circle me-3" th:src="${map.user.headurl}" alt="headUrl" style="height: 40px"/>
                                             <div class="small">
                                                 <div class="fw-bold" th:text="${map.user.nickname}">Kelly Rowan</div>
                                                 <div class="text-muted" th:text="'发布于：'+${#dates.format(map.post.createTime,'yyyy-MM-dd HH:mm:ss')}">2022.3.20</div>
                                             </div>
+
                                         </div>
                                     </div>
                                 </div>
@@ -114,7 +116,9 @@
                 </div>
             </section>
 
-            <a th:href="@{/community/publish}"><button type="button">发起帖子/资源</button></a>
+            <a th:href="@{/community/publish}" >
+                <button type="button" class="btn-primary align-content-center">发起帖子/资源</button>
+            </a>
             <!-- Pagination-->
             <nav aria-label="Pagination" th:if="${page.rows>0}" th:fragment="pagination">
                 <hr class="my-0" />

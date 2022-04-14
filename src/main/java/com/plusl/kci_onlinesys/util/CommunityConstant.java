@@ -30,7 +30,7 @@ public interface CommunityConstant {
     /**
      * 勾选记住我状态下的登录凭证超时时间, 默认30天
      */
-    int REMEMBER_EXPIRED_SECONDS = 3600 * 24 * 30;
+    int REMEMBER_EXPIRED_SECONDS = 3600 * 24;
 
     /**
      * 实体类型：帖子

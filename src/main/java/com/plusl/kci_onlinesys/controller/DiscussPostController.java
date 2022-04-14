@@ -7,6 +7,7 @@ import com.plusl.kci_onlinesys.entity.Page;
 import com.plusl.kci_onlinesys.entity.User;
 import com.plusl.kci_onlinesys.service.CommentService;
 import com.plusl.kci_onlinesys.service.DiscussPostService;
+import com.plusl.kci_onlinesys.service.LikeService;
 import com.plusl.kci_onlinesys.service.UserService;
 import com.plusl.kci_onlinesys.util.CommunityConstant;
 import com.plusl.kci_onlinesys.util.CommunityUtil;
@@ -43,6 +44,9 @@ public class DiscussPostController implements CommunityConstant {
     @Autowired
     private CommentService commentService;
 
+    @Autowired
+    private LikeService likeService;
+
     @LoginRequired
     @RequestMapping(value = "/index" , method = RequestMethod.GET)
     public String getIndexPage(Model model, Page page){
@@ -63,6 +67,10 @@ public class DiscussPostController implements CommunityConstant {
                 map.put("post", post);
                 User user = userService.findById(post.getUserId());
                 map.put("user", user);
+
+                long likeCount = likeService.findEntityLikeCount(ENTITY_TYPE_POST, post.getId());
+                map.put("likeCount", likeCount);
+
                 discussPosts.add(map);
             }
         }
