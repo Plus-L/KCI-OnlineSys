@@ -3,7 +3,9 @@ package com.plusl.kci_onlinesys.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.ibatis.javassist.SerialVersionUID;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -15,7 +17,8 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class User implements Serializable {
+
     /** 用户ID */
     private Integer id;
 

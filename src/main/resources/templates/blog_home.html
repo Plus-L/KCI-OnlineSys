@@ -94,10 +94,13 @@
                                 <div class="card-footer p-4 pt-0 bg-transparent border-top-0">
                                     <div class="d-flex align-items-end justify-content-between">
                                         <div class="d-flex align-items-center">
-                                            <img class="rounded-circle me-3" th:src="${map.user.headurl}" alt="headUrl" style="height: 40px"/>
+                                            <a th:href="@{|/user/profile/${map.user.id}|}">
+                                                <img class="rounded-circle me-3" th:src="${map.user.headurl}" alt="headUrl" style="height: 40px"/>
+                                            </a>
                                             <div class="small">
                                                 <div class="fw-bold" th:text="${map.user.nickname}">Kelly Rowan</div>
                                                 <div class="text-muted" th:text="'发布于：'+${#dates.format(map.post.createTime,'yyyy-MM-dd HH:mm:ss')}">2022.3.20</div>
+                                                <div class="text-muted">赞 <span th:text="${map.likeCount}"></span></div>
                                             </div>
 
                                         </div>

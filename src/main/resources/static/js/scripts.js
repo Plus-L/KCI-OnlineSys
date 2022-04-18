@@ -10,6 +10,7 @@ var CONTEXT_PATH = "http://plusl.natapp1.cc";
 
 $(function(){
     $("#publishBtn").click(publish);
+    $(".follow-btn").click(follow);
 });
 
 function publish() {
@@ -24,4 +25,19 @@ function publish() {
             $("#hintBody").text(data.msg);
         }
     )
+}
+
+function follow() {
+    var btn = this;
+
+    if($(btn).hasClass("btn-info")) {
+        $.post(
+            CONTEXT_PATH + "/follow",
+            {"entityType":3,"entityId":entityId}
+        );
+
+        $(btn).text("已关注").removeClass("btn-info").addClass("btn-secondary");
+    } else {
+        $(btn).text("关注TA").removeClass("btn-secondary").addClass("btn-info");
+    }
 }

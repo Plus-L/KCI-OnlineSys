@@ -39,7 +39,7 @@
                                 <img th:src="${loginUser.headurl}" class="rounded-circle me-3" style="height: 30px">
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownBlog">
-                                <li><a class="dropdown-item" href="#">个人主页</a></li>
+                                <li><a class="dropdown-item" th:href="@{|/user/profile/${loginUser.id}|}">个人主页</a></li>
                                 <li><a class="dropdown-item" th:href="@{/user/setting}">账号设置</a></li>
                                 <li><a class="dropdown-item" th:href="@{/logout}">退出登录</a></li>
                                 </br>

@@ -2,12 +2,11 @@ package com.plusl.kci_onlinesys.controller;
 
 import com.plusl.kci_onlinesys.annotation.LoginRequired;
 import com.plusl.kci_onlinesys.entity.User;
+import com.plusl.kci_onlinesys.service.LikeService;
 import com.plusl.kci_onlinesys.service.UserService;
 import com.plusl.kci_onlinesys.util.CommunityUtil;
 import com.plusl.kci_onlinesys.util.HostHolder;
-import jdk.nashorn.internal.ir.ReturnNode;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +48,9 @@ public class UserController {
 
     @Autowired
     private HostHolder hostHolder;
+
+    @Autowired
+    private LikeService likeService;
 
     /**
      * 账号设置界面GET原始数据
@@ -117,7 +119,8 @@ public class UserController {
         fileName = CommunityUtil.generateUUID() + suffix;
         File dest = new File(uploadPath + "/" + fileName);
         try {
-            headImage.transferTo(dest);//存储文件
+            //存储文件
+            headImage.transferTo(dest);
         } catch (IOException e) {
             logger.error("上传文件失败" + e.getMessage());
             throw new RuntimeException("上传文件失败，服务器发生异常", e);
@@ -159,6 +162,11 @@ public class UserController {
         }
     }
 
+    /**
+     * 更新头像
+     * @param user
+     * @return 重定向至用户设置界面
+     */
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public String updateSelfInformation(User user){
         User localUser = hostHolder.getUser();
@@ -166,6 +174,21 @@ public class UserController {
         userService.updateUser(user);
 
         return "redirect:/user/setting";
+    }
+
+    @RequestMapping(path = "/profile/{userId}", method = RequestMethod.GET)
+    public String getProfilePage(@PathVariable("userId") int userId, Model model){
+        User user = userService.findById(userId);
+        if(user == null) {
+            throw new RuntimeException("该用户不存在");
+        }
+
+        model.addAttribute("user", user);
+
+        //该用户收获点赞数
+//        int likeCount = likeService.findUserLikeCount(userId);
+//        model.addAttribute("likeCount", likeCount);
+        return "/profile";
     }
 
 }

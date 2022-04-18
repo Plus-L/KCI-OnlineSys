@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head lang="en">
+		<meta charset="utf-8" />
+		<title>KCI-个人中心</title>
+		<link rel="stylesheet" type="text/css" th:href="@{/css/public.css}"/>
+		<link rel="stylesheet" type="text/css" th:href="@{/css/myorder.css}"/>
+		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+	</head>
+	<body>
+		<!------------------------------head------------------------------>
+		<header th:replace="index::UrlHeader"></header>
+		<!------------------------------Bott------------------------------>
+		<div class="main">
+			<div class="container">
+				<div class="media mt-5">
+					<h3>
+						<a href="#"><img th:src="${user.headurl}"/></a>
+						<p class="clearfix"><span class="fl" th:utext="${user.nickname}">[羊羊羊]</span></p>
+						<span class="ml-4">获得了 <i class="text-danger" th:utext="${likeCount}">100</i> 个赞</span>
+					</h3>
+					<div>
+						<h4>我的交易</h4>
+						<ul>
+							<li><a href="#">我的购物车</a></li>
+							<li><a href="#">我的订单</a></li>
+							<li><a href="#">评价晒单</a></li>
+						</ul>
+						<h4>个人中心</h4>
+						<ul>
+							<li><a href="#">我的中心</a></li>
+							<li><a href="#">地址管理</a></li>
+						</ul>
+						<h4>账户管理</h4>
+						<ul>
+							<li  class="on"><a href="#">个人信息</a></li>
+							<li><a href="#">修改密码</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="you fl">
+					<div class="my clearfix">
+						<h2 class="fl">我的订单</h2>
+						<a href="#" class="fl">请谨防钓鱼链接或诈骗电话，了解更多&gt;</a>
+					</div>
+					<div class="dlist clearfix">
+						<ul class="fl clearfix" id="wa">
+							<li class="on"><a href="#2">全部有效订单</a></li>
+							<li><a href="#2">待支付</a></li>
+							<li><a href="#2l">待收货</a></li>
+							<li><a href="#2">已关闭</a></li>
+						</ul>
+						<form action="#" method="get" class="fr clearfix">
+							<input type="text" name="" id="aaa" value="" placeholder="请输入商品名称、订单号" />
+							<input type="button" name="" id="bbb" value="" />
+						</form>
+					</div>
+					<div class="dkuang">
+						<p class="one">已收货</p>
+						<div class="word clearfix">
+							<ul class="fl clearfix">
+								<li>2016年12月1日 18:53</li>
+								<li>杨小黄</li>
+								<li>订单号:5160513358520018</li>
+								<li>在线支付</li>
+							</ul>
+							<p class="fr">订单金额：<span>99.00</span>元</p>
+						</div>
+						<div class="shohou clearfix">
+							<a href="#" class="fl"><img src="img/g1.jpg"/></a>
+							<p class="fl"><a href="#">家用创意菜盘子圆盘 釉下彩复古</a><a href="#">¥99.00×1</a></p>
+							<p class="fr">
+								<a href="myprod.html">待评价</a>
+								<a href="orderxq.html">订单详情</a>
+							</p>
+						</div>
+					</div>
+					<div class="dkuang clearfix deng">
+						<p class="one fl">待收货</p>
+						<div  class="clearfix">
+							<div class="fl vewwl">
+								<a href="wuliu.html" class="ckwl">查看物流</a>
+								<div class="wuliu">
+									<h4>圆通速递：858888888888888</h4>
+									<ul>
+										<li>
+											<p>妥投投递并签收，已签收。签收人：本人签收</p>
+											<p>2016-12-03 17:30:00</p>
+										</li>
+										<li>
+											<p>深圳市南油速递营销部安排投递（投递员姓名：六六六。联系电话：14243452522;</p>
+											<p>2016-12-03 08:50:00</p>
+										</li>
+										<li>
+											<p>到达广东省邮政速递物流有限公司深圳航空邮件处理中心处理中心（经转）</p>
+											<p>2016-12-03 02:20:00</p>
+										</li>
+										<li>以上为最新跟踪信息<a href="wuliu.html">查看全部</a></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+						<div class="word clearfix">
+							<ul class="fl clearfix">
+								<li>2016年12月1日 18:53</li>
+								<li>杨小黄</li>
+								<li>订单号:5160513358520018</li>
+								<li>在线支付</li>
+							</ul>
+							<p class="fr">订单金额：<span>99.00</span>元</p>
+						</div>
+						<div class="shohou clearfix">
+							<a href="#" class="fl"><img src="img/g1.jpg"/></a>
+							<p class="fl"><a href="#">家用创意菜盘子圆盘 釉下彩复古</a><a href="#">¥99.00×1</a></p>
+							<p class="fr">
+								<a href="#">确认收货</a>
+								<a href="orderxq.html">订单详情</a>
+							</p>
+						</div>
+					</div>
+					<div class="dkuang deng">
+						<p class="one">待支付</p>
+						<div class="word clearfix">
+							<ul class="fl clearfix">
+								<li>2016年12月1日 18:53</li>
+								<li>杨小黄</li>
+								<li>订单号:5160513358520018</li>
+								<li>在线支付</li>
+							</ul>
+							<p class="fr">订单金额：<span>99.00</span>元</p>
+						</div>
+						<div class="shohou clearfix">
+							<a href="#" class="fl"><img src="img/g1.jpg"/></a>
+							<p class="fl"><a href="#">家用创意菜盘子圆盘 釉下彩复古</a><a href="#">¥99.00×1</a></p>
+							<p class="fr">
+								<a href="#">立即支付</a>
+								<a href="orderxq.html">订单详情</a>
+							</p>
+						</div>
+					</div>
+					<div class="dkuang">
+						<p class="one">已关闭</p>
+						<div class="word clearfix">
+							<ul class="fl clearfix">
+								<li>2016年12月1日 18:53</li>
+								<li>杨小黄</li>
+								<li>订单号:5160513358520018</li>
+								<li>在线支付</li>
+							</ul>
+							<p class="fr">订单金额：<span>99.00</span>元</p>
+						</div>
+						<div class="shohou clearfix">
+							<a href="#" class="fl"><img src="img/g1.jpg"/></a>
+							<p class="fl"><a href="#">家用创意菜盘子圆盘 釉下彩复古</a><a href="#">¥99.00×1</a></p>
+							<p class="fr">
+								<a href="#">交易失败</a>
+								<a href="orderxq.html">订单详情</a>
+							</p>
+						</div>
+					</div>
+					<div class="fenye clearfix">
+						<a href="#"><img src="img/zuo.jpg"/></a>
+						<a href="#">1</a>
+						<a href="#"><img src="img/you.jpg"/></a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--返回顶部-->
+		<div class="gotop">
+			<a href="cart.html">
+			<dl>
+				<dt><img src="img/gt1.png"/></dt>
+				<dd>去购<br />物车</dd>
+			</dl>
+			</a>
+			<a href="#" class="dh">
+			<dl>
+				<dt><img src="img/gt2.png"/></dt>
+				<dd>联系<br />客服</dd>
+			</dl>
+			</a>
+			<a href="mygxin.html">
+			<dl>
+				<dt><img src="img/gt3.png"/></dt>
+				<dd>个人<br />中心</dd>
+			</dl>
+			</a>
+			<a href="#" class="toptop" style="display: none">
+			<dl>
+				<dt><img src="img/gt4.png"/></dt>
+				<dd>返回<br />顶部</dd>
+			</dl>
+			</a>
+			<p>400-800-8200</p>
+		</div>
+		<!--footer-->
+		<footer th:replace="index::footer"></footer>
+		<script th:src="@{/js/jquery-1.12.4.min.js}" type="text/javascript" charset="utf-8"></script>
+		<script th:src="@{/js/public.js}" type="text/javascript" charset="utf-8"></script>
+		<script th:src="@{/js/user.js}" type="text/javascript" charset="utf-8"></script>
+	</body>
+</html>

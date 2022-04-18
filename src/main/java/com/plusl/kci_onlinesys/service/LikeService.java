@@ -2,8 +2,13 @@ package com.plusl.kci_onlinesys.service;
 
 import com.plusl.kci_onlinesys.util.RedisKeyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.SessionCallback;
 import org.springframework.stereotype.Service;
+
+import java.io.Serializable;
 
 /**
  * @program: kci_onlinesys
@@ -13,7 +18,7 @@ import org.springframework.stereotype.Service;
  **/
 
 @Service
-public class LikeService {
+public class LikeService implements Serializable {
 
     @Autowired
     private RedisTemplate redisTemplate;
@@ -23,17 +28,30 @@ public class LikeService {
      * @param userId 用户ID
      * @param entityType 实体类型
      * @param entityId 实体ID
+     * @param entityUserId 实体归属的用户ID
      */
-    public void like(int userId, int entityType, int entityId) {
-        String entityLikeKey = RedisKeyUtil.getEntityLikeKey(entityType, entityId);
-        Boolean isMember = redisTemplate.opsForSet().isMember(entityLikeKey, userId);
-        if (isMember) {
-            // Redis中已存在该用户的点赞信息，即用户点了两次，移除赞
-            redisTemplate.opsForSet().remove(entityLikeKey, entityId);
-        } else {
-            // Redis中不存在点赞信息，则加入redis
-            redisTemplate.opsForSet().add(entityLikeKey, entityId);
-        }
+    public void like(int userId, int entityType, int entityId, int entityUserId) {
+        redisTemplate.execute(new SessionCallback() {
+            @Override
+            public Object execute(RedisOperations redisOperations) throws DataAccessException {
+                String entityLikeKey = RedisKeyUtil.getEntityLikeKey(entityType, entityId);
+                String userLikeKey = RedisKeyUtil.getUserLikeKey(entityUserId);
+
+                boolean isMember = redisOperations.opsForSet().isMember(entityLikeKey, userId);
+                //开启事务
+                redisOperations.multi();
+
+                if (isMember) {
+                    redisOperations.opsForSet().remove(entityLikeKey, userId);
+                    redisOperations.opsForValue().decrement(userLikeKey);
+                } else {
+                    redisOperations.opsForSet().add(entityLikeKey, userId);
+                    redisOperations.opsForValue().increment(userLikeKey);
+                }
+                //执行事务
+                return redisOperations.exec();
+            }
+        });
     }
 
     /**
@@ -58,6 +76,17 @@ public class LikeService {
         String entityLikeKey = RedisKeyUtil.getEntityLikeKey(entityType, entityId);
         return redisTemplate.opsForSet().isMember(entityLikeKey, userId) ? 1 : 0;
     }
+
+    /**
+     * 查询某个用户获得的赞总数,opsForValue调用incr后得到值不会出错是没有经过redistemplate的deserialize, 而get必须经过，出错
+     * @param userId
+     * @return
+     */
+/*    public int findUserLikeCount(int userId) {
+        String userLikeKey = RedisKeyUtil.getUserLikeKey(userId);
+        Integer count = (Integer) redisTemplate.opsForValue().get(userLikeKey);
+        return count == null ? 0 : count.intValue();
+    }*/
 
 
 }
