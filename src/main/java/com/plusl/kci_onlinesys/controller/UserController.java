@@ -186,8 +186,8 @@ public class UserController {
         model.addAttribute("user", user);
 
         //该用户收获点赞数
-//        int likeCount = likeService.findUserLikeCount(userId);
-//        model.addAttribute("likeCount", likeCount);
+        int likeCount = likeService.findUserLikeCount(userId);
+        model.addAttribute("likeCount", likeCount);
         return "/profile";
     }
 

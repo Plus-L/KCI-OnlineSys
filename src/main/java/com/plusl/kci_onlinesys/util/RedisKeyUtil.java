@@ -31,6 +31,14 @@ public class RedisKeyUtil {
      * 验证码
      */
     private static final String PREFIX_KAPTCHA = "kaptcha";
+    /**
+     * 登录凭证
+     */
+    private static final String PREFIX_TICKET = "ticket";
+    /**
+     * 用户
+     */
+    private static final String PREFIX_USER = "user";
 
 
     //某个实体的赞
@@ -75,8 +83,31 @@ public class RedisKeyUtil {
         return PREFIX_FOLLOWER + SPLIT + entityType + SPLIT + entityId;
     }
 
-    public static String getKaptchaKey(int owner) {
+    /**
+     * 获取验证码key
+     * @param owner
+     * @return
+     */
+    public static String getKaptchaKey(String owner) {
         return PREFIX_KAPTCHA + SPLIT + owner;
+    }
+
+    /**
+     * 获取用户登录凭证key
+     * @param ticket
+     * @return
+     */
+    public static String getTicketKey(String ticket) {
+        return PREFIX_TICKET + SPLIT + ticket;
+    }
+
+    /**
+     * 获取用户key
+     * @param userId
+     * @return
+     */
+    public static String getUserKey(int userId) {
+        return PREFIX_USER + SPLIT + userId;
     }
 
 }

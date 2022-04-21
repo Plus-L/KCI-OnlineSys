@@ -4,10 +4,14 @@ import com.google.code.kaptcha.Producer;
 import com.plusl.kci_onlinesys.entity.User;
 import com.plusl.kci_onlinesys.service.UserService;
 import com.plusl.kci_onlinesys.util.CommunityConstant;
+import com.plusl.kci_onlinesys.util.CommunityUtil;
+import com.plusl.kci_onlinesys.util.RedisKeyUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +24,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @program: kci_onlinesys
@@ -32,11 +37,17 @@ public class LoginController implements CommunityConstant {
 
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
+    @Value("${community.path.domain}")
+    private String domain;
+
     @Autowired
     private UserService userService;
 
     @Autowired
     private Producer kaptchaProducer;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     @RequestMapping(path = "/register" , method = RequestMethod.GET)
     public String getRegisterPage(){
@@ -88,18 +99,29 @@ public class LoginController implements CommunityConstant {
     }
 
     /**
-     * 生成验证码并将其存至session，生成图片
-     * @param response
-     * @param session
+     * 1、生成验证码并将其存至session，生成图片
+     * 2、使用Redis进行重构，性能更优
+     * @param response Response
      */
     @RequestMapping(path = "/kaptcha" , method = RequestMethod.GET)
-    public void getKaptcha(HttpServletResponse response, HttpSession session){
+    public void getKaptcha(HttpServletResponse response/*, HttpSession session*/){
         //生成验证码
         String text = kaptchaProducer.createText();
         BufferedImage image = kaptchaProducer.createImage(text);
 
         //将验证码存入Session
-        session.setAttribute("kaptcha", text);
+        //session.setAttribute("kaptcha", text);
+
+        String kaptchaOwner = CommunityUtil.generateUUID();
+        Cookie cookie = new Cookie("kaptchaOwner", kaptchaOwner);
+        //cookie设置60s，超时自动报销
+        cookie.setMaxAge(60);
+        cookie.setPath(domain);
+        response.addCookie(cookie);
+
+        //存入Redis
+        String redisKey = RedisKeyUtil.getKaptchaKey(kaptchaOwner);
+        redisTemplate.opsForValue().set(redisKey, text, 60, TimeUnit.SECONDS);
 
         //将图片输出给浏览器
         response.setContentType("image/png");
@@ -113,20 +135,27 @@ public class LoginController implements CommunityConstant {
 
     /**
      * 登录验证
+     * 迭代更新为Redis中取登录信息
      * @param email
      * @param password
      * @param code
      * @param rememberme
      * @param model
-     * @param session
      * @param response
      * @return
      */
     @RequestMapping(path = "/login" , method = RequestMethod.POST)
     public String login(String email, String password, String code, boolean rememberme,
-                      Model model, HttpSession session, HttpServletResponse response){
-        String kaptcha = (String) session.getAttribute("kaptcha");
+                      @CookieValue("kaptchaOwner") String kaptchaOwner, Model model,
+            /*HttpSession session,*/ HttpServletResponse response){
+//        String kaptcha = (String) session.getAttribute("kaptcha");
         //检查验证码
+        String kaptcha = null;
+
+        if (StringUtils.isNotBlank(kaptchaOwner)) {
+            String redisKey = RedisKeyUtil.getKaptchaKey(kaptchaOwner);
+            kaptcha = (String) redisTemplate.opsForValue().get(redisKey);
+        }
         if(StringUtils.isBlank(kaptcha) || StringUtils.isBlank(code) || !kaptcha.equalsIgnoreCase(code)){
             model.addAttribute("CodeMsg", "验证码错误");
             return "/login";
@@ -137,7 +166,8 @@ public class LoginController implements CommunityConstant {
         Map<String, Object> map = userService.loginWithTicket(email, password, expiredSeconds);
         if(map.containsKey("ticket")) {
             Cookie cookie = new Cookie("ticket", map.get("ticket").toString());
-            cookie.setPath("/");//整个路径有效
+            //整个路径有效
+            cookie.setPath("/");
             cookie.setMaxAge(expiredSeconds);
             response.addCookie(cookie);
             return "redirect:/";

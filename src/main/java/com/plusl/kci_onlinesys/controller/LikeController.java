@@ -41,7 +41,7 @@ public class LikeController {
         int likeStatus = likeService.findEntityLikeStatus(user.getId(), entityType, entityId);
 
         Map<String, Object> map = new HashMap<>();
-//        map.put("likeCount", likeCount);
+        map.put("likeCount", likeCount);
         map.put("likeStatus", likeStatus);
 
         return CommunityUtil.getJsonString(0, null, map);

@@ -5,12 +5,13 @@ import org.apache.ibatis.annotations.*;
 
 /**
  * @program: kci_onlinesys
- * @description: 登录凭证Mapper
+ * @description: 登录凭证Mapper  update:@Deprecated 2022.4.18 不再推荐使用
  * @author: PlusL
  * @create: 2022-03-19 15:48
  **/
 
 @Mapper
+@Deprecated
 public interface LoginTicketMapper {
 
     @Insert({

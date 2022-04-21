@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.test.context.ContextConfiguration;
 
 /**
@@ -18,7 +19,7 @@ import org.springframework.test.context.ContextConfiguration;
 @ContextConfiguration(classes = KciOnlinesysApplication.class)
 public class RedisTest {
     @Autowired
-    private RedisTemplate redisTemplate;
+    private StringRedisTemplate redisTemplate;
 
     @Autowired
     private LikeService likeService;
@@ -40,6 +41,7 @@ public class RedisTest {
 //        System.out.println(likeService.findEntityLikeStatus(1,1,11));
 
         String likeKey = RedisKeyUtil.getUserLikeKey(1);
+        redisTemplate.opsForValue().increment(likeKey);
         Object object = redisTemplate.opsForValue().get(likeKey);
         System.out.println(object);
     }

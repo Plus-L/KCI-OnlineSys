@@ -3,8 +3,11 @@
 	<head lang="en">
 		<meta charset="utf-8" />
 		<title>KCI-个人中心</title>
+		<!-- Core theme CSS (includes Bootstrap)-->
+		<link th:href="@{/css/styles.css}" rel="stylesheet" />
 		<link rel="stylesheet" type="text/css" th:href="@{/css/public.css}"/>
 		<link rel="stylesheet" type="text/css" th:href="@{/css/myorder.css}"/>
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
 		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
 	</head>
 	<body>
@@ -15,7 +18,9 @@
 			<div class="container">
 				<div class="media mt-5">
 					<h3>
-						<a href="#"><img th:src="${user.headurl}"/></a>
+						<a href="#">
+							<img class="img-fluid rounded-circle" th:src="${user.headurl}" alt="..." style="width: 50px" />
+						</a>
 						<p class="clearfix"><span class="fl" th:utext="${user.nickname}">[羊羊羊]</span></p>
 						<span class="ml-4">获得了 <i class="text-danger" th:utext="${likeCount}">100</i> 个赞</span>
 					</h3>

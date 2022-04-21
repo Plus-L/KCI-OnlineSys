@@ -37,5 +37,11 @@ public interface UserService {
 
     int updateHeadUrl(int id, String headUrl);
 
+    User getUserCache(int userId);
+
+    User initCache(int userId);
+
+    void clearCache(int userId);
+
 
 }
