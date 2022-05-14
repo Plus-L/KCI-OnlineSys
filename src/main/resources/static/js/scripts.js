@@ -27,17 +27,26 @@ function publish() {
     )
 }
 
-function follow() {
+function follow() { //关注按钮业务
     var btn = this;
-
     if($(btn).hasClass("btn-info")) {
         $.post(
             CONTEXT_PATH + "/follow",
-            {"entityType":3,"entityId":entityId}
+            {"entityType":3,"entityId":$(btn).prev().val()},
+            function (data) {
+                location.reload();
+            }
         );
-
-        $(btn).text("已关注").removeClass("btn-info").addClass("btn-secondary");
+        //$(btn).text("已关注").removeClass("btn-info").addClass("btn-secondary");
     } else {
-        $(btn).text("关注TA").removeClass("btn-secondary").addClass("btn-info");
+        //取消关注
+        $.post(
+            CONTEXT_PATH + "/unfollow",
+            {"entityType":3,"entityId":$(btn).prev().val()},
+            function (data) {
+                location.reload();
+            }
+        );
+        //$(btn).text("关注TA").removeClass("btn-secondary").addClass("btn-info");
     }
 }

@@ -2,8 +2,10 @@ package com.plusl.kci_onlinesys.controller;
 
 import com.plusl.kci_onlinesys.annotation.LoginRequired;
 import com.plusl.kci_onlinesys.entity.User;
+import com.plusl.kci_onlinesys.service.FollowService;
 import com.plusl.kci_onlinesys.service.LikeService;
 import com.plusl.kci_onlinesys.service.UserService;
+import com.plusl.kci_onlinesys.util.CommunityConstant;
 import com.plusl.kci_onlinesys.util.CommunityUtil;
 import com.plusl.kci_onlinesys.util.HostHolder;
 import org.apache.commons.lang3.StringUtils;
@@ -33,7 +35,7 @@ import java.io.OutputStream;
 
 @Controller
 @RequestMapping("/user")
-public class UserController {
+public class UserController implements CommunityConstant {
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
@@ -51,6 +53,9 @@ public class UserController {
 
     @Autowired
     private LikeService likeService;
+
+    @Autowired
+    private FollowService followService;
 
     /**
      * 账号设置界面GET原始数据
@@ -188,6 +193,23 @@ public class UserController {
         //该用户收获点赞数
         int likeCount = likeService.findUserLikeCount(userId);
         model.addAttribute("likeCount", likeCount);
+
+        //关注数量
+        long followeeCount = followService.findFolloweeCount(userId, ENTITY_TYPE_USER);
+        model.addAttribute("followeeCount", followeeCount);
+
+        //粉丝数
+        long followerCount = followService.findFollowerCount(ENTITY_TYPE_USER, userId);
+        model.addAttribute("followerCount", followerCount);
+
+        //是否已关注
+        boolean hasFollowed = false;
+        if(hostHolder.getUser() != null) {
+            hasFollowed = followService.hasFollowed(hostHolder.getUser().getId(), ENTITY_TYPE_USER, userId);
+        }
+        model.addAttribute("hasFollowed", hasFollowed);
+
+
         return "/profile";
     }
 

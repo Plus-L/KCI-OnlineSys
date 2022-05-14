@@ -60,6 +60,8 @@
                                 <div class="ms-3">
                                     <div class="fw-bold" th:utext="${user.nickname}">Valerie Luna</div>
                                     <div class="text-muted" th:utext="${user.createtime}">News, Business</div>
+                                    <input type="hidden" id="entityId" th:value="${user.id}">
+                                    <button type="button" th:class="|btn ${hasFollowed?'btn-secondary':'btn-info'} btn-sm float-right mr-5 follow-btn|" th:text="${hasFollowed==true?'已关注':'关注TA'}">关注TA</button>
                                 </div>
                             </div>
 

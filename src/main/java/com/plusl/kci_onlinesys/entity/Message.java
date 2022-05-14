@@ -4,25 +4,25 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
 import java.util.Date;
 
 /**
  * @program: kci_onlinesys
- * @description: 登录凭证
+ * @description: 私信信息实体
  * @author: PlusL
- * @create: 2022-03-19 15:46
+ * @create: 2022-04-30 14:32
  **/
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class LoginTicket{
-
+@NoArgsConstructor
+public class Message {
     private int id;
-    private int userId;
-    private String ticket;
+    private int fromId;
+    private int toId;
+    private String conversationId;
+    private String content;
     private int status;
-    private Date expired;
+    private Date createTime;
 
 }

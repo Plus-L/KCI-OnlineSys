@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 	<head lang="en">
 		<meta charset="utf-8" />
 		<title>KCI-个人中心</title>
@@ -22,7 +22,9 @@
 							<img class="img-fluid rounded-circle" th:src="${user.headurl}" alt="..." style="width: 50px" />
 						</a>
 						<p class="clearfix"><span class="fl" th:utext="${user.nickname}">[羊羊羊]</span></p>
-						<span class="ml-4">获得了 <i class="text-danger" th:utext="${likeCount}">100</i> 个赞</span>
+						<span>关注了 <i class="text-primary" th:utext="${followeeCount}">100</i> 人</span></br>
+						<span><i class="text-primary" th:utext="${followerCount}">100</i> 粉丝</span></br>
+						<span class="ml-4">获得了 <i class="text-danger" th:utext="${likeCount}">100</i> 个赞</span></br>
 					</h3>
 					<div>
 						<h4>我的交易</h4>

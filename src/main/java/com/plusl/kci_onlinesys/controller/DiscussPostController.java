@@ -5,10 +5,7 @@ import com.plusl.kci_onlinesys.entity.Comment;
 import com.plusl.kci_onlinesys.entity.DiscussPost;
 import com.plusl.kci_onlinesys.entity.Page;
 import com.plusl.kci_onlinesys.entity.User;
-import com.plusl.kci_onlinesys.service.CommentService;
-import com.plusl.kci_onlinesys.service.DiscussPostService;
-import com.plusl.kci_onlinesys.service.LikeService;
-import com.plusl.kci_onlinesys.service.UserService;
+import com.plusl.kci_onlinesys.service.*;
 import com.plusl.kci_onlinesys.util.CommunityConstant;
 import com.plusl.kci_onlinesys.util.CommunityUtil;
 import com.plusl.kci_onlinesys.util.HostHolder;
@@ -46,6 +43,9 @@ public class DiscussPostController implements CommunityConstant {
 
     @Autowired
     private LikeService likeService;
+
+    @Autowired
+    private FollowService followService;
 
     @LoginRequired
     @RequestMapping(value = "/index" , method = RequestMethod.GET)
@@ -130,6 +130,13 @@ public class DiscussPostController implements CommunityConstant {
         //点赞状态
         int likeStatus = likeService.findEntityLikeStatus(hostHolder.getUser().getId(), ENTITY_TYPE_POST, id);
         model.addAttribute("likeStatus", likeStatus);
+
+        //是否已关注
+        boolean hasFollowed = false;
+        if(hostHolder.getUser() != null) {
+            hasFollowed = followService.hasFollowed(hostHolder.getUser().getId(), ENTITY_TYPE_USER, user.getId());
+        }
+        model.addAttribute("hasFollowed", hasFollowed);
 
         //评论分页信息
         page.setLimit(5);
